@@ -1,0 +1,11 @@
+#include <unistd.h>
+
+void env() {
+  printf("%s", getenv("SHELL"));
+}
+
+int main(void) {
+  env();
+
+  return 0;
+}

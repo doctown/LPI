@@ -1,0 +1,18 @@
+/***************************************************/
+/* practice - a practice file for creating threads */
+/***************************************************/
+#include <pthread.h>
+#include <stdio.h>
+
+void func(void) 
+{
+
+
+}
+
+
+int main(int argc, char *argv[])
+{
+  attr_t 
+  pthread_create(
+}

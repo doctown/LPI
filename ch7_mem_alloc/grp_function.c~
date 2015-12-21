@@ -1,0 +1,43 @@
+/********************************************************************************************/
+/* grp_function - Implement a few function that convert a group id to a name and vica-versa */
+/* 											    */
+/* Author: David Ogor									    */
+/* Date: 07-17-2015									    */
+/********************************************************************************************/
+#include <stdio.h>
+#include <grp.h>
+#include <errno.h>
+
+/* 
+ * Return name corresponding to uid, or NULL on error
+ */
+char *userName(const int uid)
+{
+  struct passwd *pwd;
+
+  pwd = getpwuid(uid);
+  if (pwd == NULL) {
+    if (errno == 0) {
+      printf("Cannot locate uid\n");
+      return NULL;
+    } else {
+      perror("getpwuid");
+    }
+  }
+  return pwd->pw_name;
+}
+
+/* 
+ * Return the UID  corresponding to name or -1 on error.
+ */
+uid_t getUID(const char *name) 
+{
+  uid_t u;
+  struct passwd *pwd;
+  
+  pwd = getpwnam(name);
+  
+  u = pwd->pw_uid;
+
+  return (pwd == NULL) ? NULL : pwd->pw_uid;
+}

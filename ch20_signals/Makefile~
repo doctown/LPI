@@ -1,0 +1,1 @@
+gcc sig_receiver.c -o sig_receiver.o -I ../tlpi-dist/lib/ -L../tlpi-dist/ -ltlpi

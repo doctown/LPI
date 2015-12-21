@@ -1,0 +1,77 @@
+/********************************************************************************/
+/* Ex5-3 Creates a file if necessary and appends a specified number of bytes to */
+/*  the end of the file.						        */
+/* 									        */
+/* Author: David Ogor							        */
+/* Date: 06-05-2015							        */
+/* 									        */
+/* Purpose: Demonstrate the importance of atomiticity.			        */
+/********************************************************************************/
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdbool.h>
+
+/* 
+ * Write the character '0' to the file specified to number of bytes specified.
+ *
+ * params: fd - file descriptor
+ *         num_bytes - number of bytes to be written
+ */
+void write_data(const int fd, const int num_bytes)
+{
+  char *buf = malloc(char, sizeof(BUFSIZ));
+  int count = 0; 		/* number of bytes written */
+  int res = 0; 			/* return value */
+  buf = memset(buf, '0', BUFSIZ);
+ 
+  while (count != num_bytes) {
+    if (num_bytes - count > BUFSIZ) {
+      res = write(fd, buf, BUFSIZ);
+      if (res != BUFSIZ) {
+	perror("write");
+	exit(1);
+      }
+      count += BUFSIZ;
+    } else {
+      int t_cnt = num_bytes - count; /* number of bytes left to be written */
+      res = write(fd, buf, t_cnt);
+      if ( res != t_cnt) {
+	perror("write");
+	exit(1);
+      }
+      count += t_cnt;
+    } 
+  }
+}
+
+int main(int argc, char *argv[])
+{
+  int res = 0;
+  int fd;
+  int num_bytes = 0;		/* number of bytes to write */
+  int flags = 0;
+  bool append = false;
+
+  /* Verify that correct number arguments passed */
+  if (argc != 3 || argc != 4) {
+    perror("Usage error: program_name filename num_of_bytes");
+    exit(1);
+  } else {
+    res = sscanf(argv[2], "%d", &num_bytes);
+    if (res != 1) {
+      perror("Number of bytes must be an integer.\n");
+      exit(1);
+    }
+  }
+
+  /* Read arguments and start function for writing to file. */
+  flags = O_CREAT | O_WRONLY;
+  if (argc == 4 && argv[3] == 'x') {
+    flags |= O_APPEND;
+  }
+  fd = open(argv[1], flags);
+  write_data(fd, num_bytes);
+
+  return 0;
+}

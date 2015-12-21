@@ -1,0 +1,43 @@
+/***************************************************/
+/* simple-thread -  A thread tries to join itself. */
+/* 						   */
+/* Author: David Ogor				   */
+/* Date: 07-31-2015				   */
+/***************************************************/
+#include <stdio.h>
+#include <pthread.c>
+#include <stdlib.h>
+
+/*
+ * Adds 1 to  number and return value.
+ *
+ * Returns number plus 1.
+ */
+void *plusOne(void *args) 
+{
+  int *num = (int *)args;
+
+  *num = *num + 1;
+
+  pthread_join(pthread_self(), NULL);
+ 
+  pthread_exit(*num);
+}
+
+int main(int args, char *argv[])
+{
+  pthread_t thread;
+  int ret = 0; 			/* return value */
+  int rval = 0;			/* thread return value */
+
+  ret = pthread_create(&thread, NULL, plus_one, 2);
+  if (ret != 0) {
+    perror("pthread_create");
+    exit(1);
+  }
+
+  pthread_join(thread,&rval);
+
+  printf("Program Exiting");
+  return 0;
+}

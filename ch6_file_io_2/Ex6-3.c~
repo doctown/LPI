@@ -1,0 +1,22 @@
+Ex6-3 An implementation of setenv & unsetenv
+
+Author: David Ogor
+Date: 07-01-2015
+
+#include <stdlib.h>
+
+int set(char *name, char *value, int overwrite) 
+{
+  char buf[BUFSIZ];
+
+  if (overwrite != 0) {
+    if (getenv(name) != NULL) {
+      return -1;
+    }
+  }
+
+  strcpy(buf, name);
+  strcat(buf, "=");
+  strcat(buf, value);
+
+}

@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
+void mmap_practice(const int fd);
+
+int main(int argc, char *argv[])
+{
+  int fd = 0;
+  char buf[100];
+  int flag = O_RDONLY;
+
+  printf("Enter the file to be modified:");
+  fgets(buf, sizeof(buf), stdin);
+  
+  fd = open(buf, flag);
+  if (fd == 0) {
+    fprintf(stderr, "Cannot open file %s", buf);
+    exit(1);
+  }
+
+  
+  return 0;
+}
+
+/* 
+ * Practice using mmap by mapping to a file and seeing if it can be update from the virtual memory location.
+ */
+void mmap_practice(const int fd)
+{
+  
+  
+}
